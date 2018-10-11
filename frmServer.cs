@@ -32,8 +32,7 @@ namespace SocketDemo
 
         private void btnListen_Click(object sender, EventArgs e)
         {
-            btnSend.Enabled = true;
-            lstRecived.Items.Add("Server Start..");
+            btnSend.Enabled = true;            
             sock = socket();
             sock.Bind(new IPEndPoint(0,3));
             sock.Listen(0);
@@ -67,6 +66,7 @@ namespace SocketDemo
                       
                 }
             }).Start();
+            lstRecived.Items.Add("Server Start..");
         }
 
         private void sendMsg(string msg)
@@ -116,8 +116,8 @@ namespace SocketDemo
 
                 //writ to text file in Json Format
                 File.WriteAllText(@"selectedcolor.json", strResultJson);
-
-                Console.WriteLine(strResultJson);
+                sendMsg(strResultJson);
+                //Console.WriteLine(strResultJson);
 
             }
         }
