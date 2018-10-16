@@ -19,6 +19,7 @@ namespace SocketDemo
     public partial class frmServer : Form
     {
         private Socket sock, acc;
+        private bool svrStarted = false;
 
         public frmServer()
         {
@@ -40,6 +41,7 @@ namespace SocketDemo
             {
                 acc = sock.Accept();
                 MessageBox.Show("CONNECTED ACCEPTED!");
+                svrStarted = true;
                 sock.Close();
 
                 while (true)
@@ -115,8 +117,18 @@ namespace SocketDemo
                 string strResultJson = JsonConvert.SerializeObject(clrCode);
 
                 //writ to text file in Json Format
-                File.WriteAllText(@"selectedcolor.json", strResultJson);
-                sendMsg(strResultJson);
+                string dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "MyFolder");
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+
+                File.WriteAllText(Path.Combine(dir, "selectedcolor.json"), strResultJson);
+
+                if (svrStarted)
+                {
+                    sendMsg("SecretColorCode##QSTRARE");
+                }
                 //Console.WriteLine(strResultJson);
 
             }
